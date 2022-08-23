@@ -27,5 +27,7 @@ spec:
         server: '{{server}}'
         namespace: 'pr-{{number}}'
       syncPolicy:
+        automated:
+          prune: true
         syncOptions:
-        - createNamespace=true
+        - CreateNamespace=true

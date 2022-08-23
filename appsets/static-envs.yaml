@@ -29,5 +29,7 @@ spec:
         server: '{{server}}'
         namespace: 'guestbook-{{values.path}}'
       syncPolicy:
+        automated:
+          prune: true
         syncOptions:
-        - createNamespace=true
+        - CreateNamespace=true
