@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ephemeral-envs
+spec:
+  generators:
+  - matrix:
+      generators:
+      - pullRequest:
+          github:
+            owner: nikita-akuity
+            repo: guestbook-delivery
+      - clusters:
+          selector:
+            matchLabels:
+              preview: 'true'
+  template:
+    metadata:
+      name: 'guestbook-pr-{{number}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
+        targetRevision: '{{head_sha}}'
+        path: 'env/dev'
+      destination:
+        server: '{{server}}'
+        namespace: 'pr-{{number}}'
+      syncPolicy:
+        syncOptions:
+        - createNamespace=true
