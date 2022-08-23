@@ -4,29 +4,30 @@ metadata:
   name: all-envs
 spec:
   generators:
-  - matrix: # Install all envs to every cluster
-      generators:
-      - git:
-          repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
-          revision: HEAD
-          directories:
-          - path: env/*
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
+  - clusters:
+      selector:
+        matchLabels:
+          dev: 'true'
+      values:
+        path: dev
+  - clusters:
+      selector:
+        matchLabels:
+          prod: 'true'
+      values:
+        path: prod
   template:
     metadata:
-      name: 'guestbook-{{path.basename}}-{{name}}'
+      name: 'guestbook-{{values.path}}-{{name}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
         targetRevision: HEAD
-        path: '{{path}}'
+        path: 'env/{{values.path}}'
       destination:
         server: '{{server}}'
-        namespace: 'guestbook-{{{path.basename}}'
+        namespace: 'guestbook-{{values.path}}'
       syncPolicy:
         syncOptions:
         - createNamespace=true
