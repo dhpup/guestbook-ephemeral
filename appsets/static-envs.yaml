@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-envs
+spec:
+  generators:
+  - matrix: # Install all envs to every cluster
+      generators:
+      - git:
+          repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
+          revision: HEAD
+          directories:
+          - path: env/*
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: 'guestbook-{{path.basename}}-{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: '{{server}}'
+        namespace: 'guestbook-{{{path.basename}}'
+      syncPolicy:
+        syncOptions:
+        - createNamespace=true
