@@ -8,8 +8,8 @@ spec:
       generators:
       - pullRequest:
           github:
-            owner: nikita-akuity
-            repo: guestbook-delivery
+            owner: dhpup
+            repo: guestbook-ephemeral
       - clusters:
           selector:
             matchLabels:
@@ -20,7 +20,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/nikita-akuity/guestbook-delivery.git
+        repoURL: https://github.com/dhpup/guestbook-ephemeral.git
         targetRevision: '{{head_sha}}'
         path: 'env/dev'
       destination:
