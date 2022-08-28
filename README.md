@@ -1,1 +1,1 @@
-# guestbook-delivery
+# guestbook-ephemeral
