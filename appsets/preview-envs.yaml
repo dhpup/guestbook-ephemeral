@@ -7,6 +7,8 @@ spec:
   - matrix:
       generators:
       - pullRequest:
+          filters:
+          - branchMatch: ".*-argocd"
           github:
             owner: dhpup
             repo: guestbook-ephemeral
